@@ -21,6 +21,17 @@ public class Grafo {
         listaAdy = new Lista[maxNodos];
         casillas = new Casilla[maxNodos];
        
+        // Inicializar cada lista y crear las casillas
+        for (int i = 0; i < maxNodos; i++) {
+            listaAdy[i] = new Lista();
+            int fila = i / columnas;
+            int col = i % columnas;
+            String id = this.obtenerLetra(col) + Integer.toString(fila + 1);
+            casillas[i] = new Casilla(id, fila, col);
+        }
+        // Conectar cada casilla con sus casillas adyacentes (incluyendo diagonales)
+        construirGrafo();
+        
     }
 
     public int getFilas() {
@@ -62,6 +73,33 @@ public class Grafo {
     public void setCasillas(Casilla[] casillas) {
         this.casillas = casillas;
     }
-
+    
+    private String obtenerLetra(int col) {
+        return Character.toString((char)('A' + col));
+    }
+    
+    private void construirGrafo() {
+        for (int i = 0; i < this.getMaxNodos(); i++) {
+            int fila = this.getCasillas()[i].getFila();
+            int col = this.getCasillas()[i].getColumna();
+            for (int df = -1; df <= 1; df++) {
+                for (int dc = -1; dc <= 1; dc++) {
+                    if (df == 0 && dc == 0) continue;
+                    int nf = fila + df;
+                    int nc = col + dc;
+                    if (nf >= 0 && nf < this.getFilas() && nc >= 0 && nc < this.getColumnas()) {
+                        int vecinoIndex = nf * this.getColumnas() + nc;
+                        
+                        if (!this.getListaAdy()[i].busqueda(vecinoIndex)) {
+                            this.getListaAdy()[i].insertar(vecinoIndex);
+                        }
+                        if (!this.getListaAdy()[vecinoIndex].busqueda(i)) {
+                            this.getListaAdy()[vecinoIndex].insertar(i);
+                        }
+                    }
+                }
+            }
+        }
+    }
     
 }
