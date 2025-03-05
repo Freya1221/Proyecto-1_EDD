@@ -16,4 +16,22 @@ public class Nodo {
         this.clave = clave;
         this.siguiente = siguiente;
     }
+
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
+    }
+
+    public Nodo getSiguiente() {
+        return siguiente;
+    }
+
+    public void setSiguiente(Nodo siguiente) {
+        this.siguiente = siguiente;
+    }
+    
+    
 }
