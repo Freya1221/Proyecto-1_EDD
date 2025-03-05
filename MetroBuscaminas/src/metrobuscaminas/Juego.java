@@ -23,6 +23,8 @@ public class Juego extends javax.swing.JFrame {
     JButton[][] botonesTablero;
     Grafo grafo;
     
+    int casillasRestantes;
+    
     /**
      * Creates new form Juego
      */
@@ -35,6 +37,7 @@ public class Juego extends javax.swing.JFrame {
         cargarControles();
 
         contadorMinas.setText(String.valueOf(this.minas));
+        casillasRestantes = filas * columnas;
         contadorCasillas.setText(String.valueOf(this.filas * this.columnas));
 
         grafo = new Grafo(filas, columnas); // Inicializar Grafo
@@ -71,11 +74,38 @@ public class Juego extends javax.swing.JFrame {
         String[] coordenada = btn.getName().split(",");
         int posFila = Integer.parseInt(coordenada[0]);
         int posColumna = Integer.parseInt(coordenada[1]);
-        JOptionPane.showMessageDialog(rootPane, posFila + "," + posColumna);
-        
-        // Deshabilitar el botón después de hacer clic
-        btn.setBackground(Color.LIGHT_GRAY);
-        btn.setEnabled(false);
+
+        int index = posFila * columnas + posColumna; // Convertir coordenadas a índice lineal
+        grafo.revelarCasilla(index); // Llamar a la lógica de revelación
+        actualizarTablero(); // Actualizar la interfaz gráfica
+
+    }
+
+    private void actualizarTablero() {
+        casillasRestantes = 0;
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                int index = i * columnas + j;
+                Casilla casilla = grafo.getCasillas()[index];
+                JButton btn = botonesTablero[i][j];
+                if (casilla.isRevelada()) {
+                    btn.setEnabled(false);
+                    if (casilla.isTieneMina()) {
+                        btn.setBackground(Color.RED); // Mostrar mina
+                        JOptionPane.showMessageDialog(rootPane, "¡Perdiste!");
+                    } else {
+                        btn.setBackground(Color.LIGHT_GRAY);
+                        if (casilla.getMinasAdyacentes() > 0) {
+                            btn.setText(String.valueOf(casilla.getMinasAdyacentes())); // Mostrar número de minas adyacentes
+                        }
+                    }
+                }else {
+                    casillasRestantes++; // Incrementar si la casilla no está revelada
+                }
+
+            }
+        }
+        contadorCasillas.setText(String.valueOf(casillasRestantes));
     }
     
 
