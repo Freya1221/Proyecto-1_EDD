@@ -21,6 +21,8 @@ public class Juego extends javax.swing.JFrame {
     int columnas;
     int minas;
     JButton[][] botonesTablero;
+    Grafo grafo;
+    
     /**
      * Creates new form Juego
      */
@@ -31,9 +33,13 @@ public class Juego extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         cargarControles();
-        
+
         contadorMinas.setText(String.valueOf(this.minas));
-        contadorCasillas.setText(String.valueOf(this.filas*this.columnas));
+        contadorCasillas.setText(String.valueOf(this.filas * this.columnas));
+
+        grafo = new Grafo(filas, columnas); // Inicializar Grafo
+        grafo.asignarMinas(minas);
+        grafo.calcularMinasAdyacentes();
     }
     
    private void cargarControles() {
@@ -47,7 +53,7 @@ public class Juego extends javax.swing.JFrame {
                 botonesTablero[i][j].setBorder(null);
                 botonesTablero[i][j].setBackground(Color.GRAY);
                 botonesTablero[i][j].setBorder(new BevelBorder(BevelBorder.RAISED));
-                
+
                 botonesTablero[i][j].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -57,7 +63,7 @@ public class Juego extends javax.swing.JFrame {
                 jPanel1.add(botonesTablero[i][j]);
             }
         }
-        jPanel1.setLayout(new java.awt.GridLayout(this.filas, this.columnas, 5, 5)); // 5 píxeles de espacio horizontal y vertical
+        jPanel1.setLayout(new java.awt.GridLayout(this.filas, this.columnas, 5, 5));
     }
    
     private void btnClick(ActionEvent e) {
