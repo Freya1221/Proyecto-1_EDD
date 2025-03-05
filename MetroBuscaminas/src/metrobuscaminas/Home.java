@@ -126,9 +126,9 @@ public class Home extends javax.swing.JFrame {
                     return;
                 }
 
-                // Si todas las validaciones pasan, continúa con el código
-                // ... tu lógica para crear el juego ...
-                JOptionPane.showMessageDialog(this, "Validación exitosa, ¡el juego puede comenzar!");
+                Juego juego = new Juego(numeroFilas, numeroColumnas, numeroBombas);
+                this.setVisible(false);
+                juego.setVisible(true);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Los campos deben contener solo números enteros.");
             }
