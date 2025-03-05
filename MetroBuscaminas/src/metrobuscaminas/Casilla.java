@@ -82,6 +82,8 @@ public class Casilla {
     public void setMinasAdyacentes(int minasAdyacentes) {
         this.minasAdyacentes = minasAdyacentes;
     }
+
+    
     
     public String toString() {
         if (revelada) {

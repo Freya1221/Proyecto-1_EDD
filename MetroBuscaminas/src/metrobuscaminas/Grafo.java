@@ -4,6 +4,8 @@
  */
 package metrobuscaminas;
 
+import java.util.Random;
+
 /**
  *
  * @author adcd_
@@ -101,5 +103,77 @@ public class Grafo {
             }
         }
     }
+    
+    public void asignarMinas(int numMinas) {
+        if (numMinas > this.getMaxNodos()) {
+            throw new IllegalArgumentException("El número de minas no puede exceder el número de casillas.");
+        }
+        Random rand = new Random();
+        int minasColocadas = 0;
+        while (minasColocadas < numMinas) {
+            int indice = rand.nextInt(this.getMaxNodos());
+            if (!this.getCasillas()[indice].isTieneMina()) {
+                this.getCasillas()[indice].setTieneMina(true);
+                minasColocadas++;
+            }
+        }
+    }
+    
+    public void calcularMinasAdyacentes() {
+        for (int i = 0; i < this.getMaxNodos(); i++) {
+            int count = 0;
+            Nodo nodo = this.getListaAdy()[i].getInicio();
+            while (nodo != null) {
+                if (this.getCasillas()[nodo.getClave()].isTieneMina()) {
+                    count++;
+                }
+                nodo = nodo.getSiguiente();
+            }
+            this.getCasillas()[i].setMinasAdyacentes(count);
+        }
+    }
+    
+    public void revelarCasilla(int index) {
+        if (index < 0 || index >= this.getMaxNodos()) return;
+        Casilla casilla = this.getCasillas()[index];
+        if (casilla.isRevelada() || casilla.isMarcada()) return; // Si ya fue revelada o está marcada, no se hace nada
+
+        casilla.setRevelada(true);
+        // Si la casilla es segura (sin mina) y no tiene minas adyacentes, se revela el área vecina
+        if (!casilla.isTieneMina() && casilla.getMinasAdyacentes() == 0) {
+            Nodo nodo = this.getListaAdy()[index].getInicio();
+            while (nodo != null) {
+                revelarCasilla(nodo.getClave());
+                nodo = nodo.getSiguiente();
+            }
+        }
+    }
+    
+    public void marcarCasilla(int index) {
+        if (index < 0 || index >= this.getMaxNodos()) return;
+        Casilla casilla = this.getCasillas()[index];
+        if (!casilla.isRevelada()) {
+            casilla.setMarcada(true);
+        }
+    }
+    
+    public void desmarcarCasilla(int index) {
+        if (index < 0 || index >= this.getMaxNodos()) return;
+        Casilla casilla = this.getCasillas()[index];
+        casilla.setMarcada(false);
+    }
+    
+    
+    public void imprimirTablero() {
+        for (int f = 0; f < this.getFilas(); f++) {
+            for (int c = 0; c < this.getColumnas(); c++) {
+                int index = f * this.getColumnas() + c;
+                System.out.print(this.getCasillas()[index].toString() + " ");
+            }
+            System.out.println();
+        }
+    }
+    
+    
     
 }
