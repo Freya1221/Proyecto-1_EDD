@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.border.BevelBorder;
 
 /**
  *
@@ -30,6 +31,9 @@ public class Juego extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         cargarControles();
+        
+        contadorMinas.setText(String.valueOf(this.minas));
+        contadorCasillas.setText(String.valueOf(this.filas*this.columnas));
     }
     
    private void cargarControles() {
@@ -42,6 +46,8 @@ public class Juego extends javax.swing.JFrame {
                 botonesTablero[i][j].setName(i + "," + j);
                 botonesTablero[i][j].setBorder(null);
                 botonesTablero[i][j].setBackground(Color.GRAY);
+                botonesTablero[i][j].setBorder(new BevelBorder(BevelBorder.RAISED));
+                
                 botonesTablero[i][j].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -60,6 +66,10 @@ public class Juego extends javax.swing.JFrame {
         int posFila = Integer.parseInt(coordenada[0]);
         int posColumna = Integer.parseInt(coordenada[1]);
         JOptionPane.showMessageDialog(rootPane, posFila + "," + posColumna);
+        
+        // Deshabilitar el botón después de hacer clic
+        btn.setBackground(Color.LIGHT_GRAY);
+        btn.setEnabled(false);
     }
     
 
@@ -74,14 +84,42 @@ public class Juego extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        guardarPartida = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        contadorCasillas = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        contadorMinas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 470, 420));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setText("MetroBuscaminas");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, -1, 40));
+
+        guardarPartida.setText("Guardar Partida");
+        jPanel2.add(guardarPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 47, -1, 30));
+
+        jLabel2.setText("Casillas faltantes:");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 110, -1));
+
+        contadorCasillas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        contadorCasillas.setText("0");
+        jPanel2.add(contadorCasillas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 315, 20, 20));
+
+        jLabel3.setText("Cantidad de minas:");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 110, -1));
+
+        contadorMinas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        contadorMinas.setText("0");
+        jPanel2.add(contadorMinas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 20, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 610));
 
@@ -124,6 +162,12 @@ public class Juego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel contadorCasillas;
+    private javax.swing.JLabel contadorMinas;
+    private javax.swing.JButton guardarPartida;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
