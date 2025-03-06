@@ -37,8 +37,8 @@ public class Juego extends javax.swing.JFrame {
         cargarControles();
 
         contadorMinas.setText(String.valueOf(this.minas));
-        casillasRestantes = filas * columnas;
-        contadorCasillas.setText(String.valueOf(this.filas * this.columnas));
+        casillasRestantes = (this.filas * this.columnas)-this.minas;
+        contadorCasillas.setText(String.valueOf(casillasRestantes));
 
         grafo = new Grafo(filas, columnas); // Inicializar Grafo
         grafo.asignarMinas(minas);
@@ -83,6 +83,7 @@ public class Juego extends javax.swing.JFrame {
 
     private void actualizarTablero() {
         casillasRestantes = 0;
+        boolean juegoTermino = false;
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 int index = i * columnas + j;
@@ -93,6 +94,10 @@ public class Juego extends javax.swing.JFrame {
                     if (casilla.isTieneMina()) {
                         btn.setBackground(Color.RED); // Mostrar mina
                         JOptionPane.showMessageDialog(rootPane, "¡Perdiste!");
+                        juegoTermino = true;
+                        this.setVisible(false);
+                        Home home = new Home();
+                        home.setVisible(true);
                     } else {
                         btn.setBackground(Color.LIGHT_GRAY);
                         if (casilla.getMinasAdyacentes() > 0) {
@@ -105,7 +110,14 @@ public class Juego extends javax.swing.JFrame {
 
             }
         }
-        contadorCasillas.setText(String.valueOf(casillasRestantes));
+        contadorCasillas.setText(String.valueOf(casillasRestantes-this.minas));
+        if (casillasRestantes-this.minas == 0 && juegoTermino == true){
+            JOptionPane.showMessageDialog(rootPane, "¡TERMINO EL JUEGO, GANASTE!");
+            this.setVisible(false);
+            Home home = new Home();
+            home.setVisible(true);
+        }
+        
     }
     
 
