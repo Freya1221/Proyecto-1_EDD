@@ -25,6 +25,8 @@ public class Juego extends javax.swing.JFrame {
     boolean marcar_bool;
     
     int casillasRestantes;
+    int flaggedCount = 0;
+
     
     /**
      * Creates new form Juego
@@ -87,11 +89,17 @@ public class Juego extends javax.swing.JFrame {
             if (!casilla.isRevelada()) {
                 // Si la casilla no está marcada, la marcamos
                 if (!casilla.isMarcada()) {
-                    grafo.marcarCasilla(index);
-                    btn.setBackground(Color.YELLOW); // Por ejemplo, color amarillo para indicar bandera
-                    btn.setText("F");
-                } else { // Si ya estaba marcada, se desmarca
+                    if (flaggedCount < minas) {
+                        grafo.marcarCasilla(index);
+                        flaggedCount++;
+                        btn.setBackground(Color.YELLOW); 
+                        btn.setText("Bandera");
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Solo se permiten " + minas + " banderas.");
+                    }
+                } else { // Si ya estaba marcada, la desmarca
                     grafo.desmarcarCasilla(index);
+                    flaggedCount--;
                     btn.setBackground(Color.GRAY);
                     btn.setText("");
                 }
