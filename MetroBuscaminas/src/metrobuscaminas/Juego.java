@@ -83,7 +83,7 @@ public class Juego extends javax.swing.JFrame {
 
     private void actualizarTablero() {
         casillasRestantes = 0;
-        boolean juegoTermino = false;
+        boolean juegoPerdido = false;
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 int index = i * columnas + j;
@@ -94,7 +94,7 @@ public class Juego extends javax.swing.JFrame {
                     if (casilla.isTieneMina()) {
                         btn.setBackground(Color.RED); // Mostrar mina
                         JOptionPane.showMessageDialog(rootPane, "¡Perdiste!");
-                        juegoTermino = true;
+                        juegoPerdido = true;
                         this.setVisible(false);
                         Home home = new Home();
                         home.setVisible(true);
@@ -111,7 +111,7 @@ public class Juego extends javax.swing.JFrame {
             }
         }
         contadorCasillas.setText(String.valueOf(casillasRestantes-this.minas));
-        if (casillasRestantes-this.minas == 0 && juegoTermino == true){
+        if (casillasRestantes-this.minas == 0 && juegoPerdido == false){
             JOptionPane.showMessageDialog(rootPane, "¡TERMINO EL JUEGO, GANASTE!");
             this.setVisible(false);
             Home home = new Home();
