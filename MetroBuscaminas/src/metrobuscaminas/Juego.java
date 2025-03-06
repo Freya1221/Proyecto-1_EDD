@@ -87,19 +87,18 @@ public class Juego extends javax.swing.JFrame {
         int posFila = Integer.parseInt(coordenada[0]);
         int posColumna = Integer.parseInt(coordenada[1]);
         int index = posFila * columnas + posColumna; // Convertir coordenadas a índice lineal
+        Casilla casilla = grafo.getCasillas()[index];
 
         // Si el modo marcar está activado:
         if (marcar_bool) {
-            Casilla casilla = grafo.getCasillas()[index];
             // Solo se permite marcar si la casilla no fue revelada aún
             if (!casilla.isRevelada()) {
-                // Si la casilla no está marcada, la marcamos
                 if (!casilla.isMarcada()) {
                     if (flaggedCount < minas) {
                         grafo.marcarCasilla(index);
                         flaggedCount++;
-                        btn.setBackground(Color.YELLOW); 
-                        btn.setText("Bandera");
+                        btn.setBackground(Color.YELLOW);
+                        btn.setText("🚩");
                     } else {
                         JOptionPane.showMessageDialog(rootPane, "Solo se permiten " + minas + " banderas.");
                     }
@@ -110,10 +109,50 @@ public class Juego extends javax.swing.JFrame {
                     btn.setText("");
                 }
             }
+            verificarVictoria(); // Comprobar si el usuario ganó tras marcar/desmarcar
+            return;
+        }
+
+        // Si la casilla ya fue revelada o está marcada, no hacer nada
+        if (casilla.isRevelada() || casilla.isMarcada()) {
+            return;
+        }
+
+        // Si el usuario hace clic en una mina, pierde el juego
+        if (casilla.isTieneMina()) {
+            btn.setBackground(Color.RED);
+            btn.setText("💣");
+            JOptionPane.showMessageDialog(rootPane, "¡BOOM! Pisaste una mina.");
+            this.setVisible(false);
+            Home home = new Home();
+            home.setVisible(true);
         } else {
-            // Modo normal: se revela la casilla
             grafo.revelarCasilla(index);
             actualizarTablero();
+        }
+    }
+    
+    private void verificarVictoria() {
+        int minasMarcadasCorrectamente = 0;
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                int index = i * columnas + j;
+                Casilla casilla = grafo.getCasillas()[index];
+
+                // Si la casilla es una mina y está marcada, sumamos al contador
+                if (casilla.isTieneMina() && casilla.isMarcada()) {
+                    minasMarcadasCorrectamente++;
+                }
+            }
+        }
+
+        // Si todas las minas están marcadas correctamente, el jugador gana
+        if (minasMarcadasCorrectamente == minas) {
+            JOptionPane.showMessageDialog(rootPane, "¡Felicidades! Has marcado todas las minas y GANASTE.");
+            this.setVisible(false);
+            Home home = new Home();
+            home.setVisible(true);
         }
     }
 
