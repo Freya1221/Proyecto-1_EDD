@@ -22,6 +22,7 @@ public class Juego extends javax.swing.JFrame {
     int minas;
     JButton[][] botonesTablero;
     Grafo grafo;
+    boolean marcar_bool;
     
     int casillasRestantes;
     
@@ -32,6 +33,7 @@ public class Juego extends javax.swing.JFrame {
         this.filas = filas;
         this.columnas = columnas;
         this.minas = minas;
+        this.marcar_bool = false;
         initComponents();
         setLocationRelativeTo(null);
         cargarControles();
@@ -69,17 +71,38 @@ public class Juego extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.GridLayout(this.filas, this.columnas, 5, 5));
     }
    
+
+    
     private void btnClick(ActionEvent e) {
         JButton btn = (JButton) e.getSource();
         String[] coordenada = btn.getName().split(",");
         int posFila = Integer.parseInt(coordenada[0]);
         int posColumna = Integer.parseInt(coordenada[1]);
-
         int index = posFila * columnas + posColumna; // Convertir coordenadas a índice lineal
-        grafo.revelarCasilla(index); // Llamar a la lógica de revelación
-        actualizarTablero(); // Actualizar la interfaz gráfica
 
+        // Si el modo marcar está activado:
+        if (marcar_bool) {
+            Casilla casilla = grafo.getCasillas()[index];
+            // Solo se permite marcar si la casilla no fue revelada aún
+            if (!casilla.isRevelada()) {
+                // Si la casilla no está marcada, la marcamos
+                if (!casilla.isMarcada()) {
+                    grafo.marcarCasilla(index);
+                    btn.setBackground(Color.YELLOW); // Por ejemplo, color amarillo para indicar bandera
+                    btn.setText("F");
+                } else { // Si ya estaba marcada, se desmarca
+                    grafo.desmarcarCasilla(index);
+                    btn.setBackground(Color.GRAY);
+                    btn.setText("");
+                }
+            }
+        } else {
+            // Modo normal: se revela la casilla
+            grafo.revelarCasilla(index);
+            actualizarTablero();
+        }
     }
+
 
     private void actualizarTablero() {
         casillasRestantes = 0;
@@ -138,6 +161,8 @@ public class Juego extends javax.swing.JFrame {
         contadorCasillas = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         contadorMinas = new javax.swing.JLabel();
+        marcar = new javax.swing.JButton();
+        ver_opcion_marcar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -169,10 +194,31 @@ public class Juego extends javax.swing.JFrame {
         contadorMinas.setText("0");
         jPanel2.add(contadorMinas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 20, -1));
 
+        marcar.setText("Marcar");
+        marcar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                marcarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(marcar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 110, 120, -1));
+
+        ver_opcion_marcar.setText("Desactivado");
+        jPanel2.add(ver_opcion_marcar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 150, -1, -1));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 610));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void marcarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marcarActionPerformed
+        if (marcar_bool == false){
+            marcar_bool = true;
+            this.ver_opcion_marcar.setText("Activado");
+        }else{
+            marcar_bool = false;
+            this.ver_opcion_marcar.setText("Desactivado");
+        }
+    }//GEN-LAST:event_marcarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,5 +264,7 @@ public class Juego extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton marcar;
+    private javax.swing.JLabel ver_opcion_marcar;
     // End of variables declaration//GEN-END:variables
 }
