@@ -7,9 +7,15 @@ package metrobuscaminas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -186,6 +192,11 @@ public class Juego extends javax.swing.JFrame {
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, -1, 40));
 
         guardarPartida.setText("Guardar Partida");
+        guardarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarPartidaActionPerformed(evt);
+            }
+        });
         jPanel2.add(guardarPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 47, -1, 30));
 
         jLabel2.setText("Casillas faltantes:");
@@ -227,6 +238,41 @@ public class Juego extends javax.swing.JFrame {
             this.ver_opcion_marcar.setText("Desactivado");
         }
     }//GEN-LAST:event_marcarActionPerformed
+
+    private void guardarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarPartidaActionPerformed
+       // Crear el JFileChooser
+        JFileChooser fc = new JFileChooser();
+
+        // Crear y asignar el filtro para archivos CSV
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos CSV", "csv");
+        fc.setFileFilter(filtro);
+        fc.setAcceptAllFileFilterUsed(false);
+
+        // Mostrar el diálogo de guardado
+        int returnVal = fc.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String path = file.getAbsolutePath();
+
+            // Forzar que el archivo tenga la extensión .csv
+            if (!path.toLowerCase().endsWith(".csv")) {
+                file = new File(path + ".csv");
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                bw.write("filas,columnas,minas");
+                bw.newLine();
+                bw.write(filas + "," + columnas + "," + minas);
+                bw.newLine();
+
+                
+                bw.flush();
+                JOptionPane.showMessageDialog(this, "Partida guardada exitosamente en:\n" + file.getAbsolutePath());
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Error al guardar la partida: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_guardarPartidaActionPerformed
 
     /**
      * @param args the command line arguments
