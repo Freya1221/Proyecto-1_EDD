@@ -4,7 +4,13 @@
  */
 package metrobuscaminas;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -93,7 +99,30 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargarJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarJuegoActionPerformed
-        // TODO add your handling code here:
+       JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos CSV (*.csv)", "csv");
+        fc.setFileFilter(filter);
+        int returnVal = fc.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                br.readLine(); // Leer la cabecera
+                if ((line = br.readLine()) != null) {
+                    String[] values = line.split(",");
+                    int filas = Integer.parseInt(values[0]);
+                    int columnas = Integer.parseInt(values[1]);
+                    int bombas = Integer.parseInt(values[2]);
+                    Juego juego = new Juego(filas, columnas, bombas);
+                    this.setVisible(false);
+                    juego.setVisible(true);
+                }
+            } catch (IOException | NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Error al cargar el archivo.");
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_cargarJuegoActionPerformed
 
     private void inicioPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioPartidaActionPerformed
