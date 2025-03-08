@@ -150,7 +150,45 @@ public class Grafo {
     }
     
     public void revelarCasillaBFS(int index) {
-        
+        if (index < 0 || index >= this.getMaxNodos()){
+            return;
+        }
+        Casilla casillaInicial = this.getCasillas()[index];
+
+        // Si la casilla ya fue revelada o es una mina, no hacemos nada
+        if (casillaInicial.isRevelada() || casillaInicial.isMarcada()){
+            return;
+        }
+
+        // Creamos un arreglo para manejar la cola
+        int[] cola = new int[this.getMaxNodos()];
+        int inicio = 0, fin = 0;
+
+        // Agregamos la primera casilla a la cola
+        cola[fin++] = index;
+
+        while (inicio < fin) {
+            int actual = cola[inicio++];
+            Casilla casilla = this.getCasillas()[actual];
+
+            if (casilla.isRevelada()){
+                continue;
+            }
+
+            casilla.setRevelada(true);
+
+            // Si la casilla no tiene minas adyacentes, añadimos sus vecinos a la cola
+            if (casilla.getMinasAdyacentes() == 0) {
+                Nodo nodo = this.getListaAdy()[actual].getInicio();
+                while (nodo != null) {
+                    int vecino = nodo.getClave();
+                    if (!this.getCasillas()[vecino].isRevelada() && !this.getCasillas()[vecino].isMarcada()) {
+                        cola[fin++] = vecino;
+                    }
+                    nodo = nodo.getSiguiente();
+                }
+            }
+        }
     }
     
     public void marcarCasilla(int index) {
