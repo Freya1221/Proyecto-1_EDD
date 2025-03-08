@@ -18,8 +18,11 @@ import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author adcd_
+ * Clase principal del juego MetroBuscaminas.
+ * Gestiona la lógica del tablero, la interfaz gráfica y la interacción del usuario.
+ * Permite iniciar una nueva partida, cargar una partida guardada y guardar el progreso.
+ * 
+ * @author Freya Blanca, Jesús Schneider
  */
 public class Juego extends javax.swing.JFrame {
     
@@ -35,7 +38,11 @@ public class Juego extends javax.swing.JFrame {
 
     
     /**
-     * Creates new form Juego
+     * Constructor de la clase Juego.
+     * 
+     * @param filas Número de filas del tablero.
+     * @param columnas Número de columnas del tablero.
+     * @param minas Número de minas en el tablero.
      */
     public Juego(int filas, int columnas, int minas) {
         this.filas = filas;
@@ -56,7 +63,10 @@ public class Juego extends javax.swing.JFrame {
         DFS.setSelected(true);
     }
     
-   private void cargarControles() {
+    /**
+     * Carga los controles gráficos y genera la matriz de botones para el tablero.
+     */
+    private void cargarControles() {
         botonesTablero = new JButton[this.filas][this.columnas];
         jPanel1.setLayout(new java.awt.GridLayout(this.filas, this.columnas));
 
@@ -81,7 +91,11 @@ public class Juego extends javax.swing.JFrame {
     }
    
 
-    
+    /**
+     * Maneja el evento de clic en una casilla del tablero.
+     * 
+     * @param e Evento de acción generado al hacer clic en una casilla.
+     */
     private void btnClick(ActionEvent e) {
         JButton btn = (JButton) e.getSource();
         String[] coordenada = btn.getName().split(",");
@@ -91,10 +105,10 @@ public class Juego extends javax.swing.JFrame {
         Casilla casilla = grafo.getCasillas()[index];
 
         // Si el modo marcar está activado:
-        if (marcar_bool) {
+        if (marcar_bool == true) {
             // Solo se permite marcar si la casilla no fue revelada aún
-            if (!casilla.isRevelada()) {
-                if (!casilla.isMarcada()) {
+            if (casilla.isRevelada() == false) {
+                if (casilla.isMarcada() == false) {
                     if (flaggedCount < minas) {
                         grafo.marcarCasilla(index);
                         flaggedCount++;
@@ -137,6 +151,9 @@ public class Juego extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Verifica si el jugador ha marcado correctamente todas las minas y ha ganado el juego.
+     */
     private void verificarVictoria() {
         int minasMarcadasCorrectamente = 0;
 
@@ -161,13 +178,27 @@ public class Juego extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Devuelve el grafo del tablero.
+     * 
+     * @return Objeto de tipo Grafo que representa el tablero.
+     */
     public Grafo getGrafo() {
         return this.grafo;
     }
+    
+    /**
+     * Establece el número de casillas marcadas con banderas.
+     * 
+     * @param flaggedCount Número de banderas colocadas por el usuario.
+     */
     public void setFlaggedCount(int flaggedCount) {
         this.flaggedCount = flaggedCount;
     }
-
+    
+    /**
+     * Actualiza la interfaz del tablero según el estado actual del juego.
+     */
     public void actualizarTablero() {
         casillasRestantes = 0;
         boolean juegoPerdido = false;
