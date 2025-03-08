@@ -159,7 +159,9 @@ public class Juego extends javax.swing.JFrame {
     public Grafo getGrafo() {
         return this.grafo;
     }
-
+    public void setFlaggedCount(int flaggedCount) {
+        this.flaggedCount = flaggedCount;
+    }
 
     public void actualizarTablero() {
         casillasRestantes = 0;
@@ -172,7 +174,8 @@ public class Juego extends javax.swing.JFrame {
                 if (casilla.isRevelada()) {
                     btn.setEnabled(false);
                     if (casilla.isTieneMina()) {
-                        btn.setBackground(Color.RED); // Mostrar mina
+                        btn.setBackground(Color.RED);
+                        btn.setText("💣");
                         JOptionPane.showMessageDialog(rootPane, "¡Perdiste!");
                         juegoPerdido = true;
                         this.setVisible(false);
@@ -182,9 +185,18 @@ public class Juego extends javax.swing.JFrame {
                         btn.setBackground(Color.LIGHT_GRAY);
                         if (casilla.getMinasAdyacentes() > 0) {
                             btn.setText(String.valueOf(casilla.getMinasAdyacentes())); // Mostrar número de minas adyacentes
+                        }else {
+                            btn.setText("");
                         }
                     }
                 }else {
+                    if (casilla.isMarcada()) {
+                        btn.setBackground(Color.YELLOW);
+                        btn.setText("🚩");
+                    } else {
+                        btn.setBackground(Color.GRAY);
+                        btn.setText("");
+                    }
                     casillasRestantes++; // Incrementar si la casilla no está revelada
                 }
 
@@ -303,19 +315,14 @@ public class Juego extends javax.swing.JFrame {
             }
 
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-                // 1) Escribir la línea de cabecera para las dimensiones del tablero
+                //Escribir la línea de cabecera para las dimensiones del tablero
                 bw.write("filas,columnas,minas");
                 bw.newLine();
-                // 2) Escribir los valores de filas, columnas y minas
+                //Escribir los valores de filas, columnas y minas
                 bw.write(filas + "," + columnas + "," + minas);
                 bw.newLine();
 
-                // 3) (Opcional) Cabecera para las casillas
-                //    Si quieres, puedes poner una línea que describa cada campo, por ejemplo:
-                // bw.write("id,fila,columna,revelada,marcada,tieneMina,minasAdyacentes");
-                // bw.newLine();
-
-                // 4) Recorrer cada casilla y escribir su estado en formato CSV
+                //Recorrer cada casilla y escribir su estado en formato CSV
                 Casilla[] casillas = grafo.getCasillas();
                 for (Casilla c : casillas) {
                     bw.write(

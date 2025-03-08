@@ -142,9 +142,18 @@ public class Home extends javax.swing.JFrame {
                     casillas[index].setTieneMina(Boolean.parseBoolean(parts[5].trim()));
                     casillas[index].setMinasAdyacentes(Integer.parseInt(parts[6].trim()));
                 }
+                
+                int countFlags = 0;
+                for (Casilla c : casillas) {
+                    if (c.isMarcada()) {
+                        countFlags++;
+                    }
+                }
+                juego.setFlaggedCount(countFlags);
 
                 // Actualiza el tablero para que la interfaz refleje el estado cargado
                 juego.actualizarTablero();
+                juego.repaint();
                 juego.setVisible(true);
                 this.setVisible(false);
             } catch (IOException | NumberFormatException ex) {
