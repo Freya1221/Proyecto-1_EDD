@@ -149,6 +149,10 @@ public class Grafo {
         }
     }
     
+    public void revelarCasillaBFS(int index) {
+        
+    }
+    
     public void marcarCasilla(int index) {
         if (index < 0 || index >= this.getMaxNodos()) return;
         Casilla casilla = this.getCasillas()[index];

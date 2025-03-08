@@ -53,6 +53,7 @@ public class Juego extends javax.swing.JFrame {
         grafo = new Grafo(filas, columnas); // Inicializar Grafo
         grafo.asignarMinas(minas);
         grafo.calcularMinasAdyacentes();
+        DFS.setSelected(true);
     }
     
    private void cargarControles() {
@@ -127,7 +128,11 @@ public class Juego extends javax.swing.JFrame {
             Home home = new Home();
             home.setVisible(true);
         } else {
-            grafo.revelarCasilla(index);
+            if (DFS.isSelected()) {
+                grafo.revelarCasilla(index);
+            } else if (BFS.isSelected()) {
+                grafo.revelarCasillaBFS(index);
+            }
             actualizarTablero();
         }
     }
@@ -222,6 +227,7 @@ public class Juego extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -232,6 +238,9 @@ public class Juego extends javax.swing.JFrame {
         contadorMinas = new javax.swing.JLabel();
         marcar = new javax.swing.JButton();
         ver_opcion_marcar = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        BFS = new javax.swing.JRadioButton();
+        DFS = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -261,8 +270,8 @@ public class Juego extends javax.swing.JFrame {
         contadorCasillas.setText("0");
         jPanel2.add(contadorCasillas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 315, 20, 20));
 
-        jLabel3.setText("Cantidad de minas:");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 110, -1));
+        jLabel3.setText("Metodo de busqueda:");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 200, 130, -1));
 
         contadorMinas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         contadorMinas.setText("0");
@@ -278,6 +287,22 @@ public class Juego extends javax.swing.JFrame {
 
         ver_opcion_marcar.setText("Desactivado");
         jPanel2.add(ver_opcion_marcar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 150, -1, -1));
+
+        jLabel4.setText("Cantidad de minas:");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 110, -1));
+
+        buttonGroup2.add(BFS);
+        BFS.setText("BFS");
+        jPanel2.add(BFS, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 260, -1, -1));
+
+        buttonGroup2.add(DFS);
+        DFS.setText("DFS");
+        DFS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DFSActionPerformed(evt);
+            }
+        });
+        jPanel2.add(DFS, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 230, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 610));
 
@@ -345,6 +370,10 @@ public class Juego extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_guardarPartidaActionPerformed
 
+    private void DFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DFSActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DFSActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -381,12 +410,16 @@ public class Juego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton BFS;
+    private javax.swing.JRadioButton DFS;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel contadorCasillas;
     private javax.swing.JLabel contadorMinas;
     private javax.swing.JButton guardarPartida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton marcar;
