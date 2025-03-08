@@ -13,13 +13,16 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author adcd_
+ * Clase principal para la pantalla de inicio del juego MetroBuscaminas.
+ * Permite iniciar una nueva partida o cargar una partida guardada.
+ * 
+ * @author Freya Blanca, Jesús Schneider
  */
 public class Home extends javax.swing.JFrame {
 
     /**
-     * Creates new form Home
+     * Constructor de la clase Home.
+     * Inicializa los componentes gráficos y centra la ventana en la pantalla.
      */
     public Home() {
         initComponents();
@@ -98,6 +101,13 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método ejecutado cuando el usuario presiona el botón "Cargar Juego".
+     * Permite seleccionar un archivo CSV con una partida guardada, lo carga 
+     * y actualiza el tablero de juego con los datos almacenados.
+     * 
+     * @param evt Evento de acción generado al presionar el botón.
+     */
     private void cargarJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarJuegoActionPerformed
        // Crear el JFileChooser y asignar un filtro para archivos CSV
         JFileChooser fc = new JFileChooser();
@@ -162,6 +172,13 @@ public class Home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cargarJuegoActionPerformed
 
+    /**
+     * Método ejecutado cuando el usuario presiona el botón "Iniciar Partida".
+     * Obtiene los valores ingresados por el usuario y valida los datos antes de 
+     * iniciar un nuevo juego.
+     * 
+     * @param evt Evento de acción generado al presionar el botón.
+     */
     private void inicioPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioPartidaActionPerformed
         String filas = inputFila.getText().trim();
         String columnas = inputColumna.getText().trim();
