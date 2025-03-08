@@ -7,8 +7,10 @@ package metrobuscaminas;
 import java.util.Random;
 
 /**
- *
- * @author adcd_
+ * Representa un grafo que modela el tablero del juego MetroBuscaminas.
+ * Se usa una lista de adyacencia para gestionar las conexiones entre casillas.
+ * 
+ * @author Freya Blanca, Jesús Schneider
  */
 public class Grafo {
     private int filas, columnas;
@@ -16,6 +18,13 @@ public class Grafo {
     private Lista[] listaAdy;
     private Casilla[] casillas;
     
+    /**
+     * Constructor de la clase Grafo.
+     * Inicializa el tablero con el número de filas y columnas especificado.
+     * 
+     * @param filas Número de filas del tablero.
+     * @param columnas Número de columnas del tablero.
+     */
     public Grafo(int filas, int columnas) {
         this.filas = filas;
         this.columnas = columnas;
@@ -36,6 +45,10 @@ public class Grafo {
         
     }
 
+    /**
+     * Getter and Setter de los atributos de Grafo
+     * 
+     */
     public int getFilas() {
         return filas;
     }
@@ -80,6 +93,9 @@ public class Grafo {
         return Character.toString((char)('A' + col));
     }
     
+    /**
+     * Construye el grafo conectando cada casilla con sus casillas adyacentes.
+     */
     private void construirGrafo() {
         for (int i = 0; i < this.getMaxNodos(); i++) {
             int fila = this.getCasillas()[i].getFila();
@@ -104,6 +120,13 @@ public class Grafo {
         }
     }
     
+    
+    /**
+     * Asigna un número determinado de minas a posiciones aleatorias del tablero.
+     * 
+     * @param numMinas Número de minas a colocar.
+     * @throws IllegalArgumentException Si el número de minas supera el total de casillas.
+     */
     public void asignarMinas(int numMinas) {
         if (numMinas > this.getMaxNodos()) {
             throw new IllegalArgumentException("El número de minas no puede exceder el número de casillas.");
@@ -119,6 +142,9 @@ public class Grafo {
         }
     }
     
+    /**
+     * Calcula la cantidad de minas adyacentes para cada casilla del tablero.
+     */
     public void calcularMinasAdyacentes() {
         for (int i = 0; i < this.getMaxNodos(); i++) {
             int count = 0;
@@ -133,6 +159,12 @@ public class Grafo {
         }
     }
     
+    /**
+     * Revela una casilla usando búsqueda en profundidad (DFS).
+     * Si la casilla no tiene minas adyacentes, revela las casillas vecinas recursivamente.
+     * 
+     * @param index Índice de la casilla a revelar.
+     */
     public void revelarCasilla(int index) {
         if (index < 0 || index >= this.getMaxNodos()) return;
         Casilla casilla = this.getCasillas()[index];
@@ -149,6 +181,11 @@ public class Grafo {
         }
     }
     
+    /**
+     * Revela una casilla y expande la búsqueda con el algoritmo de búsqueda en amplitud (BFS).
+     * 
+     * @param index Índice de la casilla a revelar.
+     */
     public void revelarCasillaBFS(int index) {
         if (index < 0 || index >= this.getMaxNodos()){
             return;
@@ -191,6 +228,11 @@ public class Grafo {
         }
     }
     
+    /**
+     * Marca una casilla con una bandera.
+     * 
+     * @param index Índice de la casilla a marcar.
+     */
     public void marcarCasilla(int index) {
         if (index < 0 || index >= this.getMaxNodos()) return;
         Casilla casilla = this.getCasillas()[index];
@@ -199,13 +241,20 @@ public class Grafo {
         }
     }
     
+    /**
+     * Desmarca una casilla previamente marcada.
+     * 
+     * @param index Índice de la casilla a desmarcar.
+     */
     public void desmarcarCasilla(int index) {
         if (index < 0 || index >= this.getMaxNodos()) return;
         Casilla casilla = this.getCasillas()[index];
         casilla.setMarcada(false);
     }
     
-    
+    /**
+     * Imprime el tablero en la consola.
+     */
     public void imprimirTablero() {
         for (int f = 0; f < this.getFilas(); f++) {
             for (int c = 0; c < this.getColumnas(); c++) {

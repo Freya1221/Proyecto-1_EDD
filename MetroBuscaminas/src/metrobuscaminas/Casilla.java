@@ -5,8 +5,11 @@
 package metrobuscaminas;
 
 /**
- *
- * @author adcd_
+ * Representa una casilla dentro del juego MetroBuscaminas.
+ * Cada casilla puede contener una mina, ser marcada por el usuario o ser revelada.
+ * También almacena la cantidad de minas adyacentes.
+ * 
+ * @author Freya Blanca, Jesús Schneider
  */
 public class Casilla {
     private String id;
@@ -16,7 +19,14 @@ public class Casilla {
     private boolean marcada;
     private int minasAdyacentes;
     
-    
+    /**
+     * Constructor de la clase Casilla.
+     * Inicializa una casilla en la posición dada, sin mina, no revelada y sin marcar.
+     * 
+     * @param id Identificador único de la casilla.
+     * @param fila Número de fila en la que se encuentra la casilla.
+     * @param columna Número de columna en la que se encuentra la casilla.
+     */
     public Casilla(String id, int fila, int columna) {
         this.id = id;
         this.fila = fila;
@@ -27,10 +37,14 @@ public class Casilla {
         this.minasAdyacentes = 0;
     }
 
+    /**
+     * Getter and Setter de los atributos de Casilla
+     * 
+     */
     public String getId() {
         return id;
     }
-
+    
     public void setId(String id) {
         this.id = id;
     }
@@ -84,7 +98,15 @@ public class Casilla {
     }
 
     
-    
+    /**
+     * Representación en texto de la casilla según su estado:
+     * - "*" si contiene una mina y ha sido revelada.
+     * - Número de minas adyacentes si no es una mina y ha sido revelada.
+     * - "F" si está marcada con una bandera.
+     * - "?" si no ha sido revelada ni marcada.
+     * 
+     * @return Representación textual de la casilla.
+     */
     public String toString() {
         if (revelada) {
             if (tieneMina) {
