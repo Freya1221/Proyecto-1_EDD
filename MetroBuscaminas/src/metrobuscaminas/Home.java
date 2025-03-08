@@ -99,28 +99,56 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargarJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarJuegoActionPerformed
-       JFileChooser fc = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos CSV (*.csv)", "csv");
-        fc.setFileFilter(filter);
-        int returnVal = fc.showOpenDialog(this);
+       // Crear el JFileChooser y asignar un filtro para archivos CSV
+        JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos CSV", "csv");
+        fc.setFileFilter(filtro);
+        fc.setAcceptAllFileFilterUsed(false);
 
+        int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line;
-                br.readLine(); // Leer la cabecera
-                if ((line = br.readLine()) != null) {
-                    String[] values = line.split(",");
-                    int filas = Integer.parseInt(values[0]);
-                    int columnas = Integer.parseInt(values[1]);
-                    int bombas = Integer.parseInt(values[2]);
-                    Juego juego = new Juego(filas, columnas, bombas);
-                    this.setVisible(false);
-                    juego.setVisible(true);
+                // Leer la primera línea, que puede ser una cabecera
+                String header = br.readLine();
+                String[] headerParts = header.split(",");
+                // Si el primer elemento no es un dígito, es una cabecera y se salta a la siguiente línea
+                if (!Character.isDigit(headerParts[0].trim().charAt(0))) {
+                    header = br.readLine();
+                    headerParts = header.split(",");
                 }
+                int numFilas = Integer.parseInt(headerParts[0].trim());
+                int numColumnas = Integer.parseInt(headerParts[1].trim());
+                int numBombas = Integer.parseInt(headerParts[2].trim());
+
+                // Crear una nueva instancia del juego con estos parámetros
+                Juego juego = new Juego(numFilas, numColumnas, numBombas);
+
+                // Obtener el arreglo de casillas del grafo
+                Casilla[] casillas = juego.getGrafo().getCasillas();
+
+                // Leer cada línea con el estado de cada casilla.
+                // Se asume que cada línea tiene el formato:
+                // id,fila,columna,revelada,marcada,tieneMina,minasAdyacentes
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    int fila = Integer.parseInt(parts[1].trim());
+                    int col = Integer.parseInt(parts[2].trim());
+                    int index = fila * numColumnas + col; // Calcular el índice de la casilla
+
+                    casillas[index].setRevelada(Boolean.parseBoolean(parts[3].trim()));
+                    casillas[index].setMarcada(Boolean.parseBoolean(parts[4].trim()));
+                    casillas[index].setTieneMina(Boolean.parseBoolean(parts[5].trim()));
+                    casillas[index].setMinasAdyacentes(Integer.parseInt(parts[6].trim()));
+                }
+
+                // Actualiza el tablero para que la interfaz refleje el estado cargado
+                juego.actualizarTablero();
+                juego.setVisible(true);
+                this.setVisible(false);
             } catch (IOException | NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Error al cargar el archivo.");
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al cargar la partida: " + ex.getMessage());
             }
         }
     }//GEN-LAST:event_cargarJuegoActionPerformed

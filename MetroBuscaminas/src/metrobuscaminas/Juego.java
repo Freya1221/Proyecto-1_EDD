@@ -155,9 +155,13 @@ public class Juego extends javax.swing.JFrame {
             home.setVisible(true);
         }
     }
+    
+    public Grafo getGrafo() {
+        return this.grafo;
+    }
 
 
-    private void actualizarTablero() {
+    public void actualizarTablero() {
         casillasRestantes = 0;
         boolean juegoPerdido = false;
         for (int i = 0; i < filas; i++) {
@@ -279,7 +283,7 @@ public class Juego extends javax.swing.JFrame {
     }//GEN-LAST:event_marcarActionPerformed
 
     private void guardarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarPartidaActionPerformed
-       // Crear el JFileChooser
+        // Crear el JFileChooser
         JFileChooser fc = new JFileChooser();
 
         // Crear y asignar el filtro para archivos CSV
@@ -299,12 +303,33 @@ public class Juego extends javax.swing.JFrame {
             }
 
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                // 1) Escribir la línea de cabecera para las dimensiones del tablero
                 bw.write("filas,columnas,minas");
                 bw.newLine();
+                // 2) Escribir los valores de filas, columnas y minas
                 bw.write(filas + "," + columnas + "," + minas);
                 bw.newLine();
 
-                
+                // 3) (Opcional) Cabecera para las casillas
+                //    Si quieres, puedes poner una línea que describa cada campo, por ejemplo:
+                // bw.write("id,fila,columna,revelada,marcada,tieneMina,minasAdyacentes");
+                // bw.newLine();
+
+                // 4) Recorrer cada casilla y escribir su estado en formato CSV
+                Casilla[] casillas = grafo.getCasillas();
+                for (Casilla c : casillas) {
+                    bw.write(
+                        c.getId() + "," + 
+                        c.getFila() + "," + 
+                        c.getColumna() + "," +
+                        c.isRevelada() + "," +
+                        c.isMarcada() + "," +
+                        c.isTieneMina() + "," +
+                        c.getMinasAdyacentes()
+                    );
+                    bw.newLine();
+                }
+
                 bw.flush();
                 JOptionPane.showMessageDialog(this, "Partida guardada exitosamente en:\n" + file.getAbsolutePath());
             } catch (IOException ex) {
