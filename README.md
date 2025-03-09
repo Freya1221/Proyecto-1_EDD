@@ -25,7 +25,9 @@ Marcación de Minas: El jugador puede marcar las celdas que cree que contienen m
 Objetivo: El objetivo es revelar todas las celdas que no contienen minas. Si el jugador marca todas las minas correctamente y revela todas las celdas seguras, gana el juego.
 
 Integrantes:
+
 Freya Blanco. C.I: 30.520.705
+
 Jesús Schneider. C.I: 29625956
 
 Dirección web del repositorio de github: https://github.com/Freya1221/Proyecto-1_EDD.git
