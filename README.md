@@ -26,4 +26,4 @@ Integrantes:
 Freya Blanco. C.I: 30.520.705
 Jesús Schneider. C.I: 29625956
 
-Dirección web del repositorio de github: 
+Dirección web del repositorio de github: https://github.com/Freya1221/Proyecto-1_EDD.git
