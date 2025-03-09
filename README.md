@@ -1,5 +1,7 @@
 # Proyecto-1_EDD
+
 A continuación se presenta nuestro proyecto de Metrobuscaminas.
+
 Explicación del juego:
 
 Metrobuscaminas es un juego que combina el razonamiento deductivo, la probabilidad y, en ocasiones, un poco de suerte.
