@@ -20,7 +20,11 @@ public class Lista {
     public Lista() {
         this.inicio = null;
     }
-
+    
+    /**
+     * Getter and Setter de los atributos de Lista
+     * 
+     */
     public Nodo getInicio() {
         return inicio;
     }
