@@ -50,6 +50,9 @@ public class Home extends javax.swing.JFrame {
         inputBomba = new javax.swing.JTextField();
         inputColumna = new javax.swing.JTextField();
         inputFila = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -95,6 +98,15 @@ public class Home extends javax.swing.JFrame {
         jPanel1.add(inputBomba, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 330, 120, -1));
         jPanel1.add(inputColumna, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 120, -1));
         jPanel1.add(inputFila, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, 120, -1));
+
+        jLabel7.setText("Jesús Schneider");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 430, -1, -1));
+
+        jLabel8.setText("Integrantes:");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 390, -1, -1));
+
+        jLabel9.setText("Freya Blanca");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 410, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, 475));
 
@@ -265,6 +277,9 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -54,6 +54,7 @@ public class Juego extends javax.swing.JFrame {
         cargarControles();
 
         contadorMinas.setText(String.valueOf(this.minas));
+        contadorBanderas.setText(String.valueOf(this.minas));
         casillasRestantes = (this.filas * this.columnas)-this.minas;
         contadorCasillas.setText(String.valueOf(casillasRestantes));
 
@@ -61,6 +62,7 @@ public class Juego extends javax.swing.JFrame {
         grafo.asignarMinas(minas);
         grafo.calcularMinasAdyacentes();
         DFS.setSelected(true);
+        
     }
     
     /**
@@ -123,6 +125,7 @@ public class Juego extends javax.swing.JFrame {
                     btn.setBackground(Color.GRAY);
                     btn.setText("");
                 }
+                contadorBanderas.setText(String.valueOf(minas - flaggedCount));
             }
             verificarVictoria(); // Comprobar si el usuario ganó tras marcar/desmarcar
             return;
@@ -239,6 +242,8 @@ public class Juego extends javax.swing.JFrame {
             }
         }
         contadorCasillas.setText(String.valueOf(casillasRestantes-this.minas));
+        contadorBanderas.setText(String.valueOf(minas - flaggedCount));
+        
         if (casillasRestantes-this.minas == 0 && juegoPerdido == false){
             JOptionPane.showMessageDialog(rootPane, "¡TERMINO EL JUEGO, GANASTE!");
             this.setVisible(false);
@@ -263,7 +268,6 @@ public class Juego extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         guardarPartida = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         contadorCasillas = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         contadorMinas = new javax.swing.JLabel();
@@ -272,6 +276,9 @@ public class Juego extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         BFS = new javax.swing.JRadioButton();
         DFS = new javax.swing.JRadioButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        contadorBanderas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -294,12 +301,9 @@ public class Juego extends javax.swing.JFrame {
         });
         jPanel2.add(guardarPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 47, -1, 30));
 
-        jLabel2.setText("Casillas faltantes:");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 110, -1));
-
         contadorCasillas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         contadorCasillas.setText("0");
-        jPanel2.add(contadorCasillas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 315, 20, 20));
+        jPanel2.add(contadorCasillas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, 20, 20));
 
         jLabel3.setText("Metodo de busqueda:");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 200, 130, -1));
@@ -334,6 +338,16 @@ public class Juego extends javax.swing.JFrame {
             }
         });
         jPanel2.add(DFS, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 230, -1, -1));
+
+        jLabel5.setText("Cantidad de Banderas:");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 120, -1));
+
+        jLabel6.setText("Casillas faltantes:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 110, -1));
+
+        contadorBanderas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        contadorBanderas.setText("0");
+        jPanel2.add(contadorBanderas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 400, 20, 20));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 610));
 
@@ -444,13 +458,15 @@ public class Juego extends javax.swing.JFrame {
     private javax.swing.JRadioButton BFS;
     private javax.swing.JRadioButton DFS;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JLabel contadorBanderas;
     private javax.swing.JLabel contadorCasillas;
     private javax.swing.JLabel contadorMinas;
     private javax.swing.JButton guardarPartida;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton marcar;
